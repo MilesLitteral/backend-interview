@@ -23,6 +23,16 @@ public class EmployeeProcessor
         }
     }
 
+    public static boolean isEntryUniqueInArray(final String value,final String[] intArray) {            
+        int occurs = 0;     
+        for (int i = 0; i < intArray.length && occurs < 2; i++) {         
+            if (value == intArray[i]) {      
+                    occurs++;               
+            }                  
+        }             
+        return occurs == 1;       
+    }   
+
     public static void main(String[] args)
     {
         final Map<Employee, Integer> duplicateCount = new HashMap<>();
@@ -32,7 +42,19 @@ public class EmployeeProcessor
             stream.forEach(line -> {
                 final String[] elements = line.split(",");
                 final Employee emp = new Employee(elements[0], elements[1], elements[2], elements[3]);
-                duplicateCount.put(emp, duplicateCount.getOrDefault(emp, 0) + 1);
+                S
+                final Employee comparison = new Employee();
+                if(emp.socialSecurityNumber == comparison && emp.lastName == elements[0])
+                {
+                    duplicateCount.put(emp, duplicateCount.getOrDefault(emp, 1) + 1);
+                }
+                else if(emp.socialSecurityNumber != comparison)
+                {
+                    duplicateCount.put(emp, duplicateCount.getOrDefault(emp, 0) + 1);
+                }
+                else{
+                    duplicateCount.put(emp, duplicateCount.getOrDefault(emp, 0) + 1);
+                }
             });
         }
         catch (IOException ex)
@@ -40,6 +62,7 @@ public class EmployeeProcessor
             throw new RuntimeException(ex);
         }
 
+        int finalEntry = 1;
         for (Map.Entry<Employee, Integer> entry : duplicateCount.entrySet())
         {
             final Employee emp = entry.getKey();
